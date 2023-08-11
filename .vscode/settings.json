@@ -4,6 +4,12 @@
     "ios": "cpp",
     "iostream": "cpp",
     "vector": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "utility": "cpp",
+    "queue": "cpp",
+    "stack": "cpp",
+    "chrono": "cpp",
+    "span": "cpp",
+    "xtree": "cpp"
   }
 }

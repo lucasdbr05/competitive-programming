@@ -1,65 +1,67 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+#define endl '\n'
 
-const int MAX=100010;
-const int INF = 1000000010;
+typedef pair<int, int> ii;
+const int INF = 1e5+10;
+const int MAX = 1e6+10;
 
-using ii= pair<int, int>;
-int dist[MAX];
-vector<ii> adj[MAX];
-bitset<MAX> processed;
+int n,m,q,a,b,w,x, ans=INF;
+ii p;
+vector<vector<ii>> path(MAX);
+vector<int> dis_ua, dis_as;
 
 
-void djikstra(int source, int N){
-    for (int i=1; i<=N; ++i) dist[i]=INF;
+vector<int> f;
+bitset<MAX> vis_ua;
 
-    dist[source] = 0;
-    processed.reset();
-
+vector<int> dijkstra(int s){
     priority_queue<ii, vector<ii>, greater<ii>> pq;
-    pq.push(ii(0,source));
+    vector<int> dist(n+10,INF);
+    bitset<MAX> vis;
+   
+    
+    dist[s] = 0;
+    pq.push({0,s});
 
-    while (not pq.empty()){
-        auto d = pq.top().first, u = pq.top().second;
-        //d = dist, u = vertex to be processed
-        pq.pop();
-
-        if (processed[u]) continue;
-
-        processed[u]= true;
-
-        for (const auto &e:adj[u]){
-            auto v = e.first ;
-            auto w = e.second;
-
-            if (dist[v]>d+w){
-                dist[v]=d+w;
-                pq.push(ii(dist[v],v));
+    while (!pq.empty()){
+        p = pq.top(); pq.pop();
+        if (vis[p.second]) continue;
+        vis_ua[p.second]=true;
+        
+        for(auto& num: path[p.second]){
+            if (dist[num.second]>num.first+p.first){
+                dist[num.second]=num.first+p.first;
+                pq.push({dist[num.second], num.second});
             }
-
         }
     }
+    
+    return dist;
 }
 
-int solve(int N){
-    djikstra(1, N);
-    return dist[N];
-}
+
 
 int main(){
-    ios::sync_with_stdio(false);
-    int N,M;
-    cin>>N>>M;
+    ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 
-    while (M--){
-        int a, b, c;
-        cin >> a >> b >> c;
+    cin >> n >> m >> x;
 
-        adj[a].push_back(ii(b,c));
-        adj[b].push_back(ii(a,c));
+    for (int i =0;i<m;i++){
+        cin>> a >> b >> w;
+        path[a].push_back({w,b});
+        path[b].push_back({w,a});
     }
 
-    auto ans = solve(N);
+    dis_ua = dijkstra(1);
+    dis_as = dijkstra(n);
 
-    cout << ans<< "\n";
+    while(x--){
+        cin >> q;
+        ans = min(ans, (dis_ua[q]+ dis_as[q]));
+        
+    }
+
+    cout << ans << endl;
 }

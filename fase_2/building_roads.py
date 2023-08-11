@@ -1,4 +1,7 @@
 from collections import defaultdict
+import sys
+
+sys.setrecursionlimit(2**31-1)
 
 def dfs(s):
     if vis[s]:

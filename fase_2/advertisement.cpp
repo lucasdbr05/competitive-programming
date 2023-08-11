@@ -4,19 +4,19 @@ typedef long long int lli;
 
 int main(){
     int x;
-    vector<lli> v;
+    vector<lli> h;
     cin >> x;
     for (int i=0; i<x; i++) {
         lli n;
         cin>> n;
-        v.push_back(n);
+        h.push_back(n);
     }
-    v.push_back(0);
+    h.push_back(0);
     stack<lli> st;
     int i =0;
     lli area = 0;
     while (i<=x){
-        if (st.empty() || v[st.top()]< v[i]){
+        if (st.empty() || h[st.top()]< h[i]){
             st.push(i);
             i++;
         } else{
@@ -24,7 +24,7 @@ int main(){
             st.pop();
             lli w;
             w = !st.empty()? i-st.top()-1: i;
-            area = max(area, v[top]*w);
+            area = max(area, h[top]*w);
         }
     }
     cout << area << endl;

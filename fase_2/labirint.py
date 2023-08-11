@@ -18,8 +18,8 @@ for j in range(n):
 
 queue = deque()
 past_step = [["" for _ in range(m)] for _ in range(n)]
-vis= [[False for _ in range(m)] for _ in range(n)]
-vis[a[1]][a[0]] = True
+seen= [[False for _ in range(m)] for _ in range(n)]
+seen[a[1]][a[0]] = True
 queue.append(a)
 processados = [a]
 
@@ -37,16 +37,16 @@ while queue and not is_v:
             continue
         if matrix[y][x]=="#":
             continue
-        if vis[y][x]:
+        if seen[y][x]:
             continue
 
-        vis[y][x]=True
+        seen[y][x]=True
         past_step[y][x] = d
         queue.append((x,y))
         if matrix[y][x]=="B":
             break
 
-if vis[b[1]][b[0]]:
+if seen[b[1]][b[0]]:
     print("YES")
     steps = []
     aux = b
