@@ -6,7 +6,7 @@ const int INF =0x3f3f3f3f;
 const int MAX= 1e6;
 string s, t, ans;
 int s_size, t_size;
-int lcs_size[10000][10000];
+int lcs_size[5000][5000];
 
 
 int dp(int i, int j){

@@ -10,6 +10,21 @@
     "stack": "cpp",
     "chrono": "cpp",
     "span": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "array": "cpp",
+    "bitset": "cpp",
+    "deque": "cpp",
+    "initializer_list": "cpp",
+    "list": "cpp",
+    "random": "cpp",
+    "ranges": "cpp",
+    "regex": "cpp",
+    "type_traits": "cpp",
+    "valarray": "cpp",
+    "xhash": "cpp",
+    "xstring": "cpp",
+    "xiosbase": "cpp",
+    "iosfwd": "cpp",
+    "numeric": "cpp"
   }
 }
