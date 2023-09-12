@@ -17,7 +17,7 @@ int check(Point& p, Point& s, Point& t){
     
 }
 
-bool onSeg(Point& p, Point& s, Point& t){
+bool touch(Point& p, Point& s, Point& t){
     return (p.x<=max(t.x, s.x))&&(p.x>=min(t.x,s.x))&&(p.y<=max(t.y, s.y))&&(p.y>=min(t.y,s.y));
 }
 
@@ -37,10 +37,10 @@ void solve(){
     bool a2 = ((t3>=0 and t4<=0)||(t3<=0 and t4>=0))&&(t3!=0 or t4!=0);
 
     if(a1&&a2) cout << "YES"<< endl;
-    else if (t1==0 && onSeg(c,a,b))cout << "YES"<< endl;
-    else if (t2==0 && onSeg(d,a,b))cout << "YES"<< endl;
-    else if (t3==0 && onSeg(a,c,d))cout << "YES"<< endl;
-    else if (t4==0 && onSeg(b,c,d))cout << "YES"<< endl;
+    else if (t1==0 && touch(c,a,b))cout << "YES"<< endl;
+    else if (t2==0 && touch(d,a,b))cout << "YES"<< endl;
+    else if (t3==0 && touch(a,c,d))cout << "YES"<< endl;
+    else if (t4==0 && touch(b,c,d))cout << "YES"<< endl;
     else cout << "NO"<< endl;
 }
 
