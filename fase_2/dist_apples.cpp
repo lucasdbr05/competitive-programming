@@ -20,16 +20,6 @@ int binomial(int n, int k) {
     return (factorial[n]*(fexp(factorial[k], MOD-2) * fexp(factorial[n - k], MOD-2) % MOD)) % MOD;
 }
 
-int exp(int x, int aux) {
-	x %= MOD;
-	int res = 1;
-	while (aux > 0) {
-		if (aux % 2 == 1) { res = res * x % MOD; }
-		x = x * x % MOD;
-		aux /= 2;
-	}
-	return res;
-}
 
 
 int32_t main(){
@@ -41,10 +31,8 @@ int32_t main(){
     // inverse[MAX] = fexp(factorial[MAX], MOD - 2);
 	// for (int i = MAX; i >= 1; i--) { inverse[i - 1] = inverse[i] * i % MOD; }
 
-    int t;cin >> t;
-    while(t--){
+   
         int n, k; cin >> n >> k;
-        cout << binomial(n,k)<< endl;
-    }
+        cout << binomial(n+k -1,k)<< endl;
 
 }

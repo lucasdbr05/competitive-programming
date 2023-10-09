@@ -8,11 +8,15 @@ const double  PI = 3.141592653589793;
 int n,m, o;
 const int MAX = 1e9+7;
 struct Point {
-	int x, y; 
+	int x, y, idx;
+
+    Point(int x=0, int y=0): x(x), y(y){} 
 	bool operator < (Point o){ 
         if(x == o.x) return y < o.y;
         return x < o.x;
     }
+	Point operator-(const Point& o) const{ return{x -o.x, y -o.y};} 
+	int operator^(const Point& o) const {return x*o.y - y*o.x;} 
 	void operator+=(const Point& o) { x += o.x, y += o.y; } 
 	void operator-=(const Point& o) { x -= o.x, y -= o.y; } 
 	
@@ -47,6 +51,13 @@ int check(Point& p, Point& s, Point& t){
     return ans; 
 }
 
+int crs(Point p1, Point p2, Point p3){
+    int x = (p2-p1)^(p3-p1);
+    if (x>0) return 1;
+    else if(x<0) return -1;
+    else return 0;
+}   
+
 int signal(Point& p, Point& s, Point& t){
     int i= check(p,s,t);
     if (i>0) return 1;
@@ -59,44 +70,46 @@ bool touch(Point& p, Point& s, Point& t){
     return (p.x<=max(t.x, s.x))&&(p.x>=min(t.x,s.x))&&(p.y<=max(t.y, s.y))&&(p.y>=min(t.y,s.y));
 }
 
-vector<Point> convex_hull(){
+set<int> convex_hull(){
     vector<Point> lw, up;
     for (auto p: pts){
-        while (lw.size()>1 and signal(p, lw[lw.size()-2], lw.back())>0){
+        while (lw.size()>1 and crs(lw[lw.size()-2], lw.back(), p)==-1){
             lw.pop_back();
         }
         lw.push_back(p); 
     }
     reverse(pts.begin(), pts.end());
     for (auto p: pts){
-        while (up.size()>1 and signal(p, up[up.size()-2], up.back())>0){
+        while (up.size()>1 and crs(up[up.size()-2], up.back(),p)==-1){
             up.pop_back();
         }
         up.push_back(p); 
     }
-    vector<Point> hull;
-    for (int i=0; i<lw.size()-1; i++) hull.push_back(lw[i]);
-    for (int i=0; i<up.size()-1; i++) hull.push_back(up[i]);
-    return hull;
+    set<int> idx;
+    for (int i=0; i<lw.size()-1; i++) idx.insert(lw[i].idx);
+    for (int i=0; i<up.size()-1; i++) idx.insert(up[i].idx);
+    return idx;
 }
 int32_t main(){
+    sws;
     cin >> n;
     
     for (int i=0; i<n; i++){
-        Point p; cin >> p.x >> p.y;
+        Point p; cin >> p.x >> p.y; p.idx = i+1;
         pts.push_back(p);
     }
 
 
     sort(pts.begin(), pts.end());
-    vector<Point> hull = convex_hull();
+    set<int> hull = convex_hull();
+    vector<int> ans;
+    
 
+    // cout << hull.size()<< endl;
+    for(auto i:hull) cout << i << " ";
 
-    cout << hull.size()<< endl;
-    for(auto pt:hull){
-        
-        cout << pt.x << " "<< pt.y << endl;
-    }
+    cout << endl;
+
     
 
 }

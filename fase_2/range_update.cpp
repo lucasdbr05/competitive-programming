@@ -7,6 +7,7 @@ int n,m;
 #define sws ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 int arr[MAX]; 
 int seg[4*MAX], lazy[4*MAX];
+bool has[4*MAX];
  
 int build(int id, int l, int r){
     if (l==r) return seg[id]=arr[l];

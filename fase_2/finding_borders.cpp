@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
- 
 using namespace std;
 #define endl '\n'
+#define int long long int
 #define sws ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
 
 
@@ -35,32 +35,38 @@ vector<int> kmp(string& s){
 
 }
 
-int main(){
-    sws
-    string s; cin >> s;
 
-    vector<int> nbor = kmp(s);
-
-    int lider = 0;
-
-
-    for (int i=0; i<s.size(); i++){
-        lider = nxt(nbor, s, lider, s[i]);
-
-        
+vector<int> P(string s){
+    int k;
+    vector<int> p((int)s.size()+1, -1);
+    for (int i=1; i<=(int)s.size(); i++){
+        k = p[i-1];
+        while(k>=0 and s[i-1]!=s[k]) k = p[k];
+        p[i]= k+1;
     }
-    for (auto x: nbor) cout << x << " ";
-    cout << endl;
+
     vector<int> ans;
-    int aux =0;
-    int i = nbor.size()-1;
-    while(nbor[i]!=-1){
-        aux = nbor[i]+1;
-        i-= (aux);
-        ans.push_back(aux);
+    k = p[s.size()];
+
+    // for(int i=0; i<= s.size(); i++) cout << p[i]<< " ";
+    while(k>0){
+        ans.push_back(k);
+        k = p[k];
     }
 
     reverse(ans.begin(), ans.end());
+    return ans;
+
+
+}
+
+
+int32_t main(){
+    sws
+    string s; cin >> s;
+
+    vector<int> ans = P(s);
+    
     for (auto x: ans) cout << x << " ";
     cout << endl;
     

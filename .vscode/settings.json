@@ -25,6 +25,7 @@
     "xstring": "cpp",
     "xiosbase": "cpp",
     "iosfwd": "cpp",
-    "numeric": "cpp"
+    "numeric": "cpp",
+    "format": "cpp"
   }
 }

@@ -3,10 +3,10 @@ using namespace std;
 #define endl '\n'
 #define int long long int
 
-const int MAX=1e7;
+const int MAX=1e6;
 const int INF = 0x3f3f3f3f;
 const int MOD = 1e9+7;
-int factorial[MAX], inverse[MAX];
+int factorial[MAX], chr[30];
 
 int fexp(int b, int e){
     if (e==0) return 1;
@@ -20,16 +20,6 @@ int binomial(int n, int k) {
     return (factorial[n]*(fexp(factorial[k], MOD-2) * fexp(factorial[n - k], MOD-2) % MOD)) % MOD;
 }
 
-int exp(int x, int aux) {
-	x %= MOD;
-	int res = 1;
-	while (aux > 0) {
-		if (aux % 2 == 1) { res = res * x % MOD; }
-		x = x * x % MOD;
-		aux /= 2;
-	}
-	return res;
-}
 
 
 int32_t main(){
@@ -37,14 +27,24 @@ int32_t main(){
     for (int i = 1; i <= MAX; i++) {
         factorial[i] = (factorial[i - 1] * i )% MOD;
     }
-
-    // inverse[MAX] = fexp(factorial[MAX], MOD - 2);
-	// for (int i = MAX; i >= 1; i--) { inverse[i - 1] = inverse[i] * i % MOD; }
-
-    int t;cin >> t;
-    while(t--){
-        int n, k; cin >> n >> k;
-        cout << binomial(n,k)<< endl;
+    memset(chr, 0, sizeof chr);
+    string s; cin >> s;
+    int n= s.size();
+    for (int i=0; i<n; i++){
+        chr[s[i]-'a']++;
     }
+
+    int ans=1;
+    // for (int i=0; i<26; i++) cout << chr[i]<< " ";
+    for (int i=0; i<26; i++){
+        if (chr[i]==0) continue;
+        ans = (ans *binomial(n, chr[i]))%MOD;
+        n-= chr[i];
+    }
+    
+    cout << ans << endl;
+    
+
+   
 
 }

@@ -1,23 +1,29 @@
-from math import lcm
-t = int(input())
-MAX = 2 * 10**6
-crivo = [0] * (MAX + 1)
-
-
-
-for _ in range(t):
-    k, a, b = map(int, input().split())
+for _ in range(int(input())):
+    ans = ""
+    r1 = "It's in the box!"
+    r2 = "You died!"
+    r3 = "Bora ralar:"
+    aux = []
+    ans = ""
+    dict_x = {chr(i):0 for i in range(65, 65+26)}
+    dict_arr = {chr(i):0 for i in range(65, 65+26)}
+    x = list(input())
+    arr = []
+    for i in range(3): arr.extend(list(input()))
+    x.sort()
+    arr.sort()
+    for i in x: 
+        if (i!=" "): dict_x[i]+= 1
+    for i in arr: 
+        if (i!=" "): dict_arr[i]+= 1
+    for i in range(65, 65+26):
+        l = chr(i)
+        if dict_x[l]> dict_arr[l]: aux.append(l)
+        elif dict_x[l]< dict_arr[l]: 
+            ans = r2 
+            break
     
-    int vx = n/x, vy = n/y;
-	int lcm = (x*y)/(gcd(x, y));
-	vx -= (n/lcm); vy -= (n/lcm);
-	int py = ((vy)*(vy+1))/2;
-	int px = ((vx)*(n+(n-vx+1)))/2;
-	cout << px-py << endl;
+    if ans: print(ans)
+    elif aux: print(f"{r3} {''.join(aux)}")
+    else: print(r1)
 
-
-	x = ((ax)*(k+(k-ax+1)))/2;
-    y = ((ay)*(ay+1))/2;
-    
-    
-    print(x - y)

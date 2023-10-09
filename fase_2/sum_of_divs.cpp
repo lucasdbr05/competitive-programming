@@ -1,22 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define endl '\n'
 #define int long long int
-#define sws ios::sync_with_stdio(false);cin.tie(0);
-const int MAX = 1e6+10;
+typedef pair<int, int> ii;
+const int INF = 0x3f3f3f3f;
 const int MOD = 1e9+7;
-int v[3][MAX];
+int n;
 
+int fexp(int b, int e){
+    if (e==0) return 1;
+
+    int ans = fexp(b, e/2);
+    if(e%2) return (((ans*ans)%MOD)*b)%MOD;
+    else return (ans*ans)%MOD;
+}
 
 int32_t main(){
-    sws
-    int n; cin >> n;
-
-    
-    for (int i=1; i<=n; i++){
-        for (int j=i; j<=n;j+=i){
-            v[j/MAX][j%MAX]= (i+v[j/MAX][j%MAX]+ v[i/MAX][i%MAX])%MOD;
-        }
+    cin >> n;int q, j;
+    int inv2= fexp(2, MOD-2);
+    int ans = 0;
+    int curr = 1;
+    while(curr<=n){
+        q = n/curr;
+        j = n/q+1;
+        int rj = (((j%MOD)*(j-1)%MOD)%MOD)*inv2%MOD;
+        int ri = (((curr%MOD)*(curr-1)%MOD)%MOD)*inv2%MOD;
+        int aux = (rj-ri+MOD)%MOD;
+        ans = (ans+(q%MOD)*aux)%MOD;
+        curr= j;
     }
+    cout << ans << endl;
 
-    cout << v[n/MAX][n%MAX]<< endl;
 }
