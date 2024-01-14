@@ -7,10 +7,10 @@ const ll INF = 0x3f3f3f3f;
 const ll MOD = 1e9+7;
 int b, e;
 
-ll fexp(int b, int e){
+int fexp(int b, int e){
     if (e==0) return 1;
 
-    ll ans = fexp(b, e/2);
+    int ans = fexp(b, e/2);
     if(e%2) return (((ans*ans)%MOD)*b)%MOD;
     else return (ans*ans)%MOD;
 }

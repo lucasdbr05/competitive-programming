@@ -1,64 +1,44 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
+
+#define int long long
 #define endl '\n'
-#define esp  ' '
-#define int long long int
 #define pii pair<int, int>
-#define sws ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
-const int MAX= 1e6+5;
-const int MOD= 1e9+7;
-const int INF = 1e18+1;
+#define ff first
+#define ss second
+#define sws ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
+int norm(pii a, pii b) {
+    return (b.ff - a.ff) * (b.ff - a.ff) + (b.ss - a.ss) * (b.ss - a.ss);
+}
 
-struct Point {
-	int x, y; 
-	bool operator < (Point o){ 
-        if(x == o.x) return y < o.y;
-        return x < o.x;
-    }
-	void operator+=(const Point& o) { x += o.x, y += o.y; } 
-	void operator-=(const Point& o) { x -= o.x, y -= o.y; } 
-	
-};
-
-
-int32_t main(){
+signed main(){
     sws;
-
-    int n; cin >> n; int D = INF;
-    vector<Point> pts; set<pair<int, int>> s;
-    for(int i=0; i<n; i++){
-        Point p; cin >> p.x >> p.y;
-        pts.push_back(p);
+    
+    
+    int n; cin>>n;
+    vector<pii> v(n);
+    int d = LLONG_MAX;
+    for (int i = 0; i < n; i++) {
+        int x, y; cin >> x >> y;
+        v[i] = {x, y};
     }
-
-    sort(pts.begin(), pts.end());
-
-    for(int i=0, j=0; i<n; i++){
-        int d = ceil(sqrt(D));
-
-        while(abs(pts[i].x - pts[j].x) >= d){
-            s.erase({pts[i].y, pts[i].x});
+    sort(v.begin(), v.end());
+    set<pii> s = {{v[0].ss, v[0].ff}};
+    int j = 0;
+    for (int i = 1; i < n; i++) {
+        int D = ceil(sqrt(d));
+        while (j < i && v[j].ff < v[i].ff - D) {
+            s.erase({v[j].ss, v[j].ff});
             j++;
         }
 
-        auto it1 = s.lower_bound({pts[i].y - d, pts[i].x});
-        auto it2 = s.upper_bound({pts[i].y + d, pts[i].x});
-
-        for(auto x= it1; x!=it2; x++){
-            int dx = pts[i].x- x->second;
-            int dy = pts[i].y- x->first;
-            D = min(D, (dx*dx)+(dy*dy));
-
-        }
-
-        s.insert({pts[i].y, pts[i].x});
+        auto l = s.lower_bound({v[i].ss - D, 0});
+        auto r = s.upper_bound({v[i].ss + D, 0});
+        for (auto it = l; it != r; it++) {
+            d = min(d, norm({it->ss, it->ff}, v[i]));
+        } 
+        s.insert({v[i].ss, v[i].ff});
     }
-
-
-    cout << D << endl;
-
-
-    
-    
+    cout << d<< endl;
 }

@@ -26,6 +26,17 @@
     "xiosbase": "cpp",
     "iosfwd": "cpp",
     "numeric": "cpp",
-    "format": "cpp"
-  }
+    "format": "cpp",
+    "cstdlib": "cpp",
+    "limits": "cpp",
+    "xlocmes": "cpp",
+    "istream": "cpp",
+    "memory": "cpp",
+    "tuple": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xloctime": "cpp",
+    "cmath": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }
