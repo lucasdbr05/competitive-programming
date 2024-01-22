@@ -3,7 +3,7 @@ using namespace std;
 #define endl '\n'
 #define esp  ' '
 #define int long long int
-#define vii vector<vector<int>>
+#define vvi vector<vector<int>>
 #define vi vector<int>
 #define pii pair<int, int>
 #define iii array<int, 3>
