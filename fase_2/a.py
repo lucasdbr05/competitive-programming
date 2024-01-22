@@ -1,52 +1,40 @@
-def check_2pal(x):
-    pals= []
-    aux= []
+import bisect
+def find_closest_cities(n, cities):
+    left_closest = [0] * n
+    right_closest = [0] * n
 
-    i=0
-    while i <len(x):
-        l=r=i
-        while l>=0 and r < len(x):
-            if r+1<len(x) and l-1>=0 and x[l-1]==x[r+1]:
-                l-=1
-                r+=1
-            else:
-                if(r-l+1>=3):
-                    aux.append((r-l+1, r, l))
-                break
-        i+= 1
+    # Compute closest city on the left for each city
+    for i in range(1, n):
+        left_closest[i] = i - bisect.bisect_left(cities, cities[i] - cities[i-1])
 
-    i=0
-    while i <len(x)-1:
-        l, r = i, i+1
-        while l>=0 and r < len(x):
-            if r+1<len(x) and l-1>=0 and x[l-1]==x[r+1]:
-                l-=1
-                r+=1
-            else:
-                if(r-l+1>=3):
-                    aux.append((r-l+1, r, l))
-                break
-        i+= 1
-    
-    aux.sort(reverse =True)
-    # print(aux)
-    for (sz, r, l) in aux:
-        if len(pals)==0: pals.append((sz, r, l))
+    # Compute closest city on the right for each city
+    for i in range(n - 2, -1, -1):
+        right_closest[i] = bisect.bisect_left(cities, cities[i + 1] - cities[i])
+
+    return left_closest, right_closest
+
+def min_coins_to_travel(n, cities, m, queries):
+    left_closest, right_closest = find_closest_cities(n, cities)
+    result = []
+
+    for query in queries:
+        x, y = query
+        x, y = x - 1, y - 1  # Adjust indices to 0-based
+
+        # Calculate the minimum coins to travel from city x to city y
+        if x < y:
+            result.append(str(min(x - y, x + left_closest[x], y - x + right_closest[y])))
         else:
-            for (ign, aux_r, aux_l) in pals:
-                if aux_r>=r and aux_l<=l:
-                    break 
-            else:
-                pals.append((sz, r, l))
-    # print(pals)
-    if(len(pals)>=2): return True 
-    else: return False 
+            result.append(str(min(y - x, y + left_closest[y], x - y + right_closest[x])))
 
+    return result
+t = int(input())
+for _ in range(t):
+    n = int(input())
+    cities = list(map(int, input().split()))
+    m = int(input())
+    queries = [tuple(map(int, input().split())) for _ in range(m)]
 
-
-    
-
-names = input().split()
-
-for name in names:
-    if(check_2pal(name)): print(name)
+    # Solve and print the result for each test case
+    result = min_coins_to_travel(n, cities, m, queries)
+    print("\n".join(result))
