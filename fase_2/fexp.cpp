@@ -15,11 +15,27 @@ int fexp(int b, int e){
     else return (ans*ans)%MOD;
 }
 
-int main(){
-    int t; cin >> t;
-    while (t--){
-        cin >>b>>e;
-        cout << fexp(b,e) << endl;
+void fluminense(){
+    vector<int> psum(n+1);
+    int n, k; cin >> n >> k;
+    int ans=0;
+    vector<int> v(n+1);
+    int ans =0;
+    for(int i=1; i<=n; i++) {
+        cin >> v[i];
+        ans += v[i];
     }
 
+    ans = (ans + MOD)%MOD;
+
+    for(int i=1; i<=n; i++){
+        
+
+    }
+}
+
+int main(){
+    int t; 
+    cin >> t;
+    while(--t) fluminense();
 }

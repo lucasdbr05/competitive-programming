@@ -19,7 +19,7 @@ int gcd(int a, int b){
     return gcd(b, a%b);
 }
 
-int euclidian(int a, int b, int& x, int& y){
+int euc_ext(int a, int b, int& x, int& y){
     if(b==0){
         x=1;b=0;
         return a;

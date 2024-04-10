@@ -1,72 +1,60 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
+#define endl '\n'
+#define esp  ' '
+#define int long long int
+#define vvi vector<vector<int>>
+#define vi vector<int>
+#define pii pair<int, int>
+#define iii array<int, 3>
+#define pb push_back
+#define ff first
+#define ss second
+#define sws ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+const string YES = "YES";
+const string NO = "NO";
+const int MAX= 1e6+5;
+const int MOD= 1e9+7;
+const int INF = 0x3f3f3f3f3f3f3f3f;
+vector<bool> primes;
+vector<bool> crivo() {
+	vector<bool> vis(MAX+10, true);
+	for(int i=2; i<MAX; i++){
+		if(!vis[i]){
+			for(int j=i; j<MAX; j+=i){
+				vis[i]= false;
+			}
+		}
+	}
 
-pair<vector<int>> find_closest_cities(int n, const vector<int>& cities) {
-    vector<int> left_closest(n, 0);
-    vector<int> right_closest(n, 0);
-
-    // Compute closest city on the left for each city
-    for (int i = 1; i < n; ++i) {
-        left_closest[i] = i - *lower_bound(cities.begin(), cities.end(), cities[i] - cities[i - 1]) + v.begin();
-    }
-
-    // Compute closest city on the right for each city
-    for (int i = n - 2; i >= 0; --i) {
-        right_closest[i] = lower_bound(cities.begin(), cities.end(), cities[i + 1] - cities[i]) - v.begin();
-    }
-
-    return {left_closest, right_closest};
+	return vis;
 }
 
-vector<string> min_coins_to_travel(int n, const vector<int>& cities, int m, const vector<pair<int, int>>& queries) {
-    auto [left_closest, right_closest] = find_closest_cities(n, cities);
-    vector<string> result;
 
-    for (const auto& query : queries) {
-        int x = query.first - 1;
-        int y = query.second - 1;
+void fluminense(){
+    int n; 
+	cin >> n;
 
-        // Calculate the minimum coins to travel from city x to city y
-        if (x < y) {
-            result.push_back(to_string(min({x - y, x + left_closest[x], y - x + right_closest[y]})));
-        } else {
-            result.push_back(to_string(min({y - x, y + left_closest[y], x - y + right_closest[x]})));
-        }
-    }
+	vector<int> v(n);
+	vector<float> dp(n);
+	float aux = 0.0;
+	for(int i=0; i < n; i++) {
+		
+		cin >> v[i];
+	}
+	for(int i=0; i<n; i++){
+		dp[i]+= (1.0*v[i])/3;
+		aux+= dp[i];
+	}
 
-    return result;
+	cout << fixed << setprecision(10)<< aux << endl;
 }
 
-int main() {
-    int t;
-    cin >> t;
-
-    for (int test_case = 0; test_case < t; ++test_case) {
-        int n;
-        cin >> n;
-
-        vector<int> cities(n);
-        for (int i = 0; i < n; ++i) {
-            cin >> cities[i];
-        }
-
-        int m;
-        cin >> m;
-
-        vector<pair<int, int>> queries(m);
-        for (int i = 0; i < m; ++i) {
-            cin >> queries[i].first >> queries[i].second;
-        }
-
-        // Solve and print the result for each test case
-        auto result = min_coins_to_travel(n, cities, m, queries);
-        for (const auto& answer : result) {
-            cout << answer << '\n';
-        }
-    }
-
-    return 0;
+int32_t main(){
+    sws;    
+    int T=1;
+	vector<bool> primes = crivo();
+    // cin >> T;
+    while(T--)fluminense(); 
+    
 }
