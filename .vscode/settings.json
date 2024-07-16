@@ -36,7 +36,10 @@
     "xlocmon": "cpp",
     "xlocnum": "cpp",
     "xloctime": "cpp",
-    "cmath": "cpp"
+    "cmath": "cpp",
+    "string": "cpp",
+    "iomanip": "cpp",
+    "xlocale": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

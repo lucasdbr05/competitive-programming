@@ -1,110 +1,82 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <queue>
 using namespace std;
-#define endl '\n'
-#define esp  ' '
-#define o_maior_do_brasil_e_o void
-#define int long long int
-#define vvi vector<vector<int>>
-#define vi vector<int>
-#define pii pair<int, int>
-#define iii array<int, 3>
-#define pb push_back
-#define ff first
-#define ss second
-#define sws ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
-const string YES = "YES";
-const string NO = "NO";
-const int MAX= (2e3)+7;
-const int MOD= 1e9+7;
-const int INF = 0x3f3f3f3f3f3f3f3f;
-int vis[MAX][MAX];
-vector<pii> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-char g[MAX][MAX];
-
-int n, m, aux = 0; 
-bool inbound(int u, int v){
-    if(u>0 and u<=n and v>0 and v<=m) return true;
-    return false;
-}
-bool can_go(int u, int v){
-    for(auto [x, y]: dirs){
-        if(g[u+x][v+y]=='#' and g[u-x][v-y]=='#') return false;
+ 
+#define PB push_back
+ 
+string S;
+int K, I = 1, ans[500005];
+ 
+vector<int> adj[500005];
+ 
+struct node {
+    int fail, ch[26] = {}, cnt = 0;
+    vector<int> word;
+} T[500005];
+ 
+void insert(string s, int i) {
+    int x = 1;
+    for (int i = 0; i < s.size(); i++) {
+        if (T[x].ch[s[i] - 'a'] == 0)
+            T[x].ch[s[i] - 'a'] = ++I;
+        x = T[x].ch[s[i] - 'a'];
     }
-
-    return true;
+    T[x].word.PB(i);
+}
+ 
+void build() {
+    queue<int> Q;
+    int x = 1; 
+    T[1].fail = 1;
+    for (int i = 0; i < 26; i++) {
+        if (T[x].ch[i])
+            T[T[x].ch[i]].fail = x, Q.push(T[x].ch[i]);
+        else 
+            T[x].ch[i] = 1;
+    }
+    while (!Q.empty()) {
+        x = Q.front(); Q.pop();
+        for (int i = 0; i < 26; i++) {
+            if (T[x].ch[i])
+                T[T[x].ch[i]].fail = T[T[x].fail].ch[i], Q.push(T[x].ch[i]);
+            else 
+                T[x].ch[i] = T[T[x].fail].ch[i];
+        }
+    }
+    for (int i = 2; i <= I; i++)
+        adj[T[i].fail].PB(i);
+}
+ 
+void run(string s) {
+    for (int i = 0, x = 1; i < s.size(); i++) {
+        x = T[x].ch[s[i] - 'a'];
+        T[x].cnt++;
+    }
+}
+ 
+int dfs(int u) {
+    int res = T[u].cnt;
+    for (int v : adj[u])
+        res += dfs(v);
+    for (int w : T[u].word)
+        ans[w] += res;
+    return res;
+}
+ 
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(0);
     
-}
-bool can_start(int u, int v){
-    if(g[u][v]=='#') return false;
-    for(auto [x, y]: dirs){
-        if(g[u+x][v+y]=='#') return false;
+    cin >> S >> K;
+    for (int i = 0; i < K; i++) {
+        string s; cin >> s;
+        insert(s, i);
     }
-
-
-    return true;
-    
-}
-
-
-void dfs(int i, int j, int id){
-    if(g[i][j]=='#' or vis[i][j]==id) return;
-
-    bool flag= false;
-
-    for(auto [uu, vv]: dirs){
-        uu+= i; vv+= j;
-        if(inbound(uu, vv)){
-            if(g[uu][vv]=='#')flag = true;
-        }
-    }
-
-    aux++;
-    vis[i][j]= id;
-
-    if(flag) return;
-
-    for(auto [uu, vv]: dirs){
-        if(inbound(i+uu, j+vv)){
-            dfs(uu+i, vv+j, id);
-        }
-    }
-}
-
-o_maior_do_brasil_e_o fluminense(){
-   cin >> n >> m;
-    // vector<vector<char>> g(n+1, vector<char>(m+1));
-    // pii prevh = {0, 0};
-    // pii prevw = {0, 0};
-
-    int ans =0;
-    for(int i=1; i<=n; i++){
-        for(int j=1; j<=m; j++){
-            cin >> g[i][j];
-            if(g[i][j]=='.')ans=1;
-        }
-    }
-
-
-
-    int id = 0;
-    for(int i=1; i<=n; i++){
-        for(int j=1; j<=m; j++){
-            if(vis[i][j]==0 and g[i][j]!='#'){
-                aux = 0;
-                dfs(i, j, id);
-                ans = max(ans, aux);
-                id++;
-            }
-        }
-    }
-
-    cout << ans << endl;
-}
-
-signed main(){
-    sws;    
-    int T=1;
-    // cin >> T;
-    while(T--)fluminense(); 
-    
+ 
+    build();
+    run(S);
+    dfs(1);
+ 
+    for (int i = 0; i < K; i++)
+        cout << (ans[i]) << '\n';
 }

@@ -2,74 +2,98 @@
 using namespace std;
 #define endl '\n'
 #define esp  ' '
+#define o_maior_do_brasil_e_o void
 #define int long long int
+#define float double
 #define vvi vector<vector<int>>
 #define vi vector<int>
 #define pii pair<int, int>
 #define iii array<int, 3>
+#define vpii vector<pair<int, int>>
 #define pb push_back
 #define ff first
 #define ss second
 #define sws ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
 const string YES = "YES";
 const string NO = "NO";
-const int MAX= 2e5+5;
-const int MOD= 1e9+7;
+vpii dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+const int MAX= 1e6+5;
+const int MOD= 998244352;
+const int MOD1= 998244353;
 const int INF = 0x3f3f3f3f3f3f3f3f;
-bool vis[MAX];
-vector<int> g[MAX];
-int idx[MAX];
-map<int, int> mp, paths;
-int cnt = 0, adj = 0;
 
-void dfs(int v, int id){
-    if(vis[v]) return;
-
-    vis[v]=true;
-    idx[v]= id;
-    mp[id]++;
-    cnt++;
-    adj+= g[v].size();
-    int aux = 0;
-    for(auto u:g[v]){
-        dfs(u, id);
+struct Matrix {
+    vvi m;
+ 
+    int r, c;
+ 
+    Matrix(vvi mat) {
+        m = mat;
+        r = mat.size();
+        c = m[0].size();
     }
-}
-
-
-
-void fluminense(){
-    int n, m; cin >> n >> m;
-
-    while(m--){
-        int u, v; cin >> u >> v;
-        g[u].pb(v);
-        g[v].pb(u);
-    }
-    int ans =0;
-    for(int i=1;i<=n; i++){
-        if(!vis[i]){
-            cnt = 0;
-            adj = 0;
-            dfs(i, i);
-            cout << cnt << " " << adj << endl;
-            ans+= (cnt*(cnt-1))/2 - adj/2;
+ 
+    Matrix(int row, int col, bool ident=false) {
+        r = row; c = col;
+        m = vvi(r, vector<int>(c, 0));
+        if(ident) {
+            for(int i = 0; i < min(r, c); i++) {
+                m[i][i] = 1;
+            }
         }
     }
+ 
+    Matrix operator*(const Matrix &o) const {
+        assert(c == o.r); 
+        vvi res(r, vector<int>(o.c, 0));
+ 
+        for(int i =0; i < r; i++) {
+            for(int k = 0; k < c; k++) {
+                for(int j = 0; j < o.c; j++) {
+                    res[i][j] = (res[i][j] + (m[i][k]*o.m[k][j])%MOD) % MOD;
+                }
+            }
+        }
+ 
+        return Matrix(res);
+    }
+};
 
-    cout << ans << endl;
 
-
-
-
+Matrix m_fexp(Matrix M, int e, int n){
+    if(e==0) return Matrix(n, n, true);
     
-
-    
-
-
+    Matrix res = m_fexp(M, e/2, n);
+    res = res*res;
+    if(e%2)res= res*M;
+    return res;
 }
 
-int32_t main(){
+int fexp(int b, int e){
+    if (e==0) return 1;
+
+    int ans = fexp(b, e/2);
+    if(e%2) return (((ans*ans)%MOD1)*b)%MOD1;
+    else return (ans*ans)%MOD1;
+}
+
+o_maior_do_brasil_e_o fluminense(){
+    int n; cin >> n;  
+    vvi v = {
+        {0, 1},
+        {1, 1},
+    };
+    
+    Matrix fib(v);
+    Matrix fib_n = m_fexp(fib, n, 2);
+    int ans = fexp(2, fib_n.m[0][1]);
+    // cout << fib_n.m[0][0] << esp << fib_n.m[0][1] << endl;
+    // cout << fib_n.m[1][0] << esp << fib_n.m[1][1] << endl;
+
+    cout << ans << endl;
+}
+
+signed main(){
     sws;    
     int T=1;
     // cin >> T;
