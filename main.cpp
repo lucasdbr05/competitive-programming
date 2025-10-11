@@ -21,26 +21,14 @@ const int MOD= 1e9+7;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 
 void solve(){
-    int n, k; cin >> n >> k;
-
-
-
-    for(int i=1; i<2*k-n; i++) {
-        cout << i << " ";
-    }
     
-    for(int i=k; i>=2*k-n; i--) {
-        cout << i << " ";
-    }
-    
-    cout << endl;
     
 }
 
 signed main(){
     sws;    
     int T=1;
-    cin >> T;
+    // cin >> T;
     while(T--)solve(); 
     
 }
